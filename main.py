@@ -17,14 +17,14 @@ player2_y = SCREEN_HEIGHT // 2 - PADDLE_HEIGHT // 2
 # Ici, vous devez d'abord définir la position initiale de la balle (les variables ball_x et ball_y) 
 # afin qu'elle commence sa trajectoire au centre de la fenêtre du jeu en x et en y (c'est-à-dire, au centre de la ligne pointillée). 
 # Vous devez utiliser les variables de dimensions définies dans le fichier config.py. 
-ball_x = 0 # Remplacer "0" par votre réponse
-ball_y = 0 # Remplacer "0" par votre réponse
+ball_x = SCREEN_WIDTH // 2 - BALL_SIZE // 2 # Remplacer "0" par votre réponse
+ball_y = SCREEN_HEIGHT // 2 - BALL_SIZE // 2 # Remplacer "0" par votre réponse
  
 # TODO : INITIALISATION DU MOUVEMENT ALÉATOIRE DE LA BALLE
 # Ici, vous devez implémenter le mouvement de la balle dans une direction aléatoire (en x et en y), en définissant les vecteurs de vitesse de la balle, 
 # c'est-à-dire les variables ball_velocity_x et ball_velocity_y. Pour ce faire, vous devez utiliser les vitesses BALL_SPEED_X et BALL_SPEED_Y définies dans le fichier config.py
-ball_velocity_x = 0 # Remplacer "0" par votre réponse
-ball_velocity_y = 0 # Remplacer "0" par votre réponse
+ball_velocity_x = BALL_SPEED_X # Remplacer "0" par votre réponse
+ball_velocity_y = BALL_SPEED_Y # Remplacer "0" par votre réponse
 
 # Boucle du jeu
 while True:
