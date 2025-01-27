@@ -94,7 +94,7 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
             or
             ((ball_x - max(SCREEN_WIDTH - PADDLE_WIDTH, min(ball_x, SCREEN_WIDTH)))**2 + (ball_y - max(player2_y, min(ball_y, player2_y + PADDLE_HEIGHT)))**2 <= (BALL_SIZE // 2)**2)
         ) else 1
-
+        
         ball_x += ball_velocity_x
         ball_y += ball_velocity_y 
         player1_old_score = player1_score
@@ -102,16 +102,6 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
         player2_score += 1 if ball_x <= 0 else 0
         player1_score += 1 if ball_x >= SCREEN_WIDTH else 0
 
-        
-        # Vérifier s'il y a un gagnant
-        if player1_score == 11:
-            win("PLAYER 1 WINS!")
-            return
-        if player2_score == 11:
-            win("PLAYER 2 WINS!")
-            return      
-        
-        
         # si un point est marqué
         if player2_score!=player2_old_score:
             reset_ball(player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ball_velocity_y, difficulty, game_mode)
@@ -119,9 +109,15 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
         if player1_old_score!=player1_score:
             reset_ball(player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ball_velocity_y, difficulty, game_mode)
             break
-        
 
-        
+        # Vérifier s'il y a un gagnant
+        if player1_score == 11:
+            win("PLAYER 1 WINS!")
+            return
+        if player2_score == 11:
+            win("PLAYER 2 WINS!")
+            return      
+    
         
         
         #DO NOT TOUCH <--->
