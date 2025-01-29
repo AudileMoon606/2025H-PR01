@@ -27,12 +27,14 @@ def reset_ball(player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ba
     ball_y = random.randint(BALL_SIZE**2,SCREEN_HEIGHT-BALL_SIZE**2+1)
 
     # TODO : LANCEMENT DE LA BALLE APRÈS RÉINITIALISATION
-    ball_velocity_x = (-1 if old_ball_x >= SCREEN_WIDTH else 1) * BALL_SPEED_X
+    ball_velocity_x = (-BALL_SPEED_X if old_ball_x + BALL_SIZE >= SCREEN_WIDTH else BALL_SPEED_X if old_ball_x - BALL_SIZE <= 0 else ball_velocity_x)
     ball_velocity_y =  [-1,1][random.randint(0,1)] * BALL_SPEED_Y
 
     return play_game(SCREEN_HEIGHT // 2 - PADDLE_HEIGHT // 2, SCREEN_HEIGHT // 2 - PADDLE_HEIGHT // 2, player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ball_velocity_y, True, difficulty, game_mode)
 
-def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ball_velocity_y, passing=False, difficulty=None, game_mode = None):
+
+
+def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y, ball_velocity_x, ball_velocity_y, passing=False, difficulty=None, game_mode = None, margin=0):
     """
     Fonction qui lance et gère le jeu 
     """
@@ -50,6 +52,23 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
     while running:
         screen.fill(BLACK)
 
+        # Affichage des raquettes, de la balle et des points dans la fenêtre du jeu 
+        paddle1_rect = pygame.Rect(0, player1_y, PADDLE_WIDTH, PADDLE_HEIGHT)
+        paddle2_rect = pygame.Rect(SCREEN_WIDTH - PADDLE_WIDTH, player2_y, PADDLE_WIDTH, PADDLE_HEIGHT)
+        ball_rect = pygame.Rect(ball_x - BALL_SIZE, ball_y - BALL_SIZE, BALL_SIZE * 2, BALL_SIZE * 2)
+        pygame.draw.rect(screen, WHITE, paddle1_rect)
+        pygame.draw.rect(screen, WHITE, paddle2_rect)
+        pygame.draw.circle(screen, WHITE, (ball_x, ball_y), BALL_SIZE)
+        draw_center_line(screen)
+        draw_text("PLAYER 1", SCREEN_WIDTH // 4, 18, WHITE, 28, screen)
+        draw_text(str(player1_score), SCREEN_WIDTH // 4, 55, WHITE, 36, screen)
+        draw_text("PLAYER 2", SCREEN_WIDTH * 3 // 4, 18, WHITE, 28, screen)
+        draw_text(str(player2_score), SCREEN_WIDTH * 3 // 4, 55, WHITE, 36, screen)
+    
+        # Mise à jour de l'affichage
+        pygame.display.flip()
+
+
         # Gestion des touches de clavier 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -65,42 +84,29 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
                     # If 'resume', simply break out of the pause logic
                     elif result == 'resume':
                         break  # Continue the main game loop
-
-        
         
         
         # Contrôle des touches de clavier
         keys = pygame.key.get_pressed()
 
+        
         # mouvement joueur 1
         player1_y += paddle_speed if (keys[pygame.K_s] and (player1_y + PADDLE_HEIGHT + paddle_speed) <= SCREEN_HEIGHT) else -paddle_speed if (keys[pygame.K_w] and (player1_y - paddle_speed) >= 0) else 0
         
         # mouvement joueur 2
         if game_mode == "single player":
-            margin = 40 if random.randint(0,100) in range(91) else 20
-            paddle_speed_2 = (paddle_speed - 5) if difficulty == "easy" else ((paddle_speed - 4) if difficulty == "medium" else paddle_speed)
-            direction = 1 if (ball_y > player2_y + margin//2 + PADDLE_HEIGHT//2) else -1 if (ball_y < player2_y - margin//2) else 0
+            margin = 20 if random.randint(0,10) in range(0, 10) else 40  #good
+            paddle_speed_2 = (paddle_speed - 5) if difficulty == "easy" else ((paddle_speed - 4) if difficulty == "medium" else paddle_speed) #good
+            direction = 1 if (ball_y  > player2_y + PADDLE_HEIGHT//2 - margin ) else -1 if (ball_y < player2_y + margin) else 0
             player2_y = max(0, min(SCREEN_HEIGHT - PADDLE_HEIGHT, player2_y + direction * paddle_speed_2))
-
         else:
             player2_y += paddle_speed if (keys[pygame.K_DOWN] and (player2_y + PADDLE_HEIGHT + paddle_speed) <= SCREEN_HEIGHT) else -paddle_speed if (keys[pygame.K_UP] and (player2_y - paddle_speed) >= 0) else 0
-
-
-
-        # Mettre à jour la position de la balle (les variables "ball_x" et "ball_y") en utilisant les variables "ball_velocity_x" et "ball_velocity_y".
-        ball_velocity_y *= -1 if (ball_y - BALL_SIZE <= 0 or ball_y + BALL_SIZE >= SCREEN_HEIGHT) else 1
-        ball_velocity_x *= -1 if (
-            ((ball_x - max(0, min(ball_x, PADDLE_WIDTH)))**2 + (ball_y - max(player1_y, min(ball_y, player1_y + PADDLE_HEIGHT)))**2 <= (BALL_SIZE // 2)**2)
-            or
-            ((ball_x - max(SCREEN_WIDTH - PADDLE_WIDTH, min(ball_x, SCREEN_WIDTH)))**2 + (ball_y - max(player2_y, min(ball_y, player2_y + PADDLE_HEIGHT)))**2 <= (BALL_SIZE // 2)**2)
-        ) else 1
-        
-        ball_x += ball_velocity_x
-        ball_y += ball_velocity_y 
+       
+        #update du score
         player1_old_score = player1_score
         player2_old_score = player2_score
-        player2_score += 1 if ball_x <= 0 else 0
-        player1_score += 1 if ball_x >= SCREEN_WIDTH else 0
+        player1_score += 1 if ball_rect.right >= SCREEN_WIDTH else 0
+        player2_score += 1 if ball_rect.left <= 0 else 0
 
         # si un point est marqué
         if player2_score!=player2_old_score:
@@ -117,23 +123,13 @@ def play_game(player1_y, player2_y, player1_score, player2_score, ball_x, ball_y
         if player2_score == 11:
             win("PLAYER 2 WINS!")
             return      
-    
-        
-        
-        #DO NOT TOUCH <--->
 
-        # Affichage des raquettes, de la balle et des points dans la fenêtre du jeu 
-        pygame.draw.rect(screen, WHITE, (0, player1_y, PADDLE_WIDTH, PADDLE_HEIGHT))
-        pygame.draw.rect(screen, WHITE, (SCREEN_WIDTH - PADDLE_WIDTH, player2_y, PADDLE_WIDTH, PADDLE_HEIGHT))
-        pygame.draw.circle(screen, WHITE, (ball_x, ball_y), BALL_SIZE)
-        draw_center_line(screen)
-        draw_text("PLAYER 1", SCREEN_WIDTH // 4, 18, WHITE, 28, screen)
-        draw_text(str(player1_score), SCREEN_WIDTH // 4, 55, WHITE, 36, screen)
-        draw_text("PLAYER 2", SCREEN_WIDTH * 3 // 4, 18, WHITE, 28, screen)
-        draw_text(str(player2_score), SCREEN_WIDTH * 3 // 4, 55, WHITE, 36, screen)
-
-        # Mise à jour de l'affichage
-        pygame.display.flip()
+        # Mettre à jour la position de la balle (les variables "ball_x" et "ball_y") en utilisant les variables "ball_velocity_x" et "ball_velocity_y".
+        ball_velocity_y *= -1 if (ball_y - BALL_SIZE <= 0 or ball_y + BALL_SIZE >= SCREEN_HEIGHT) else 1        
+        ball_velocity_x = -ball_velocity_x if ball_rect.colliderect(paddle1_rect) or ball_rect.colliderect(paddle2_rect) else ball_velocity_x
+        
+        ball_x += ball_velocity_x
+        ball_y += ball_velocity_y
 
         # Fréquence d'images
         clock.tick(60)

@@ -49,7 +49,7 @@ Vous devez compléter les parties suivantes à l'intérieur des fichier `main.py
 *Pour la partie 1, les sections suivantes sont à compléter dans le fichier `main.py`.*
 
 #### 1.1 : Initialisation de la position de la balle
-Ici, vous devez d'abord définir la position initiale de la balle (les variables `ball_x` et `ball_y`) afin qu'elle commence sa trajectoire au centre de la fenêtre du jeu en x et en y (c'est-à-dire, au centre de la ligne pointillée). 
+Ici, vous devez d'abord définir la position initiale de la balle (les variables `ball_x` et `ball_y`) afin qu'elle commence sa trajectoire au centre de la fenêtre du jeu en x et en y (c'est-à-dire, au centre de la ligne pointillée). (Fait)
 
 #### 1.2 : Initialisation du mouvement aléatoire de la balle
 Par la suite, vous devez implémenter le mouvement de la balle dans une direction aléatoire (en x et en y), en définissant les vecteurs de vitesse de la balle, c'est-à-dire les variables `ball_velocity_x` et `ball_velocity_y`. Pour ce faire, vous devez utiliser les vitesses `BALL_SPEED_X` et `BALL_SPEED_Y` définies dans le fichier `config.py`
@@ -115,17 +115,17 @@ Votre fichier zip est à remettre dans la boîte de remise sur Moodle prévue à
 
 Le barème de correction est le suivant : 
 
-| **Partie**                                | **Tâche**                                                                 | **Points** |
-|-------------------------------------------|---------------------------------------------------------------------------|------------|
-| **Partie 1 : Initialisation de la balle** |                                                                           | **/2**     |
-|                                           | 1.1 Initialisation de la position de la balle.| 1          |
-|                                           | 1.2 Initialisation du mouvement aléatoire de la balle. | 1          |
-| **Partie 2 : Fonction `reset_ball`** |                                                                           | **/3**     |
-|                                           | 2.1 Réinitialisation de la position de la balle en x.| 1          |
-|                                           | 2.2 Réinitialisation de la position de la balle en y.| 2          |
-| **Partie 3 : Fonction `play_game`** |                                                                           | **/15**     |
-|                                           | 3.1 Implémentation du mouvement des raquettes pour l'option "multi player".| 3          |
+| **Partie**                                | **Tâche**                                                                   | **Points** |
+|-------------------------------------------|-----------------------------------------------------------------------------|------------|
+| **Partie 1 : Initialisation de la balle** |                                                                             | **/2**     |
+|                                           | 1.1 Initialisation de la position de la balle.                              | 1          |
+|                                           | 1.2 Initialisation du mouvement aléatoire de la balle.                      | 1          |
+| **Partie 2 : Fonction `reset_ball`** |                                                                                  | **/3**     |
+|                                           | 2.1 Réinitialisation de la position de la balle en x.                       | 1          |
+|                                           | 2.2 Réinitialisation de la position de la balle en y.                       | 2          |
+| **Partie 3 : Fonction `play_game`** |                                                                                   | **/15**    |
+|                                           | 3.1 Implémentation du mouvement des raquettes pour l'option "multi player". | 3          |
 |                                           | 3.2 Implémentation du mouvement des raquettes pour l'option "single player".| 7          |
-|                                           | 3.3 Gestion du mouvement de la balle.| 3          |
-|                                           | 3.4 Gestion des points et réinitialisation de la balle.| 2          |
-| **Total**                                 |                                                                           | **/20**    |
+|                                           | 3.3 Gestion du mouvement de la balle.                                       | 3          |
+|                                           | 3.4 Gestion des points et réinitialisation de la balle.                     | 2          |
+| **Total**                                 |                                                                             | **/20**    |
